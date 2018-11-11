@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('main')
+{{$string}}
         <div class="col-12">
             <div class="container">
                 <div class="row justify-content-center">
@@ -10,14 +11,12 @@
                         </p>
                         <div class="row">
                             <div class="col-6">
-                                <a class="btn btn-outline-primary btn-lg btn-block" href="/" role="button">Заказать справку</a>
+                                <a class="btn btn-outline-primary btn-lg btn-block" href="/spravka" role="button">Заказать справку</a>
                             </div>
                             <div class="col-6">
-                                <a class="btn btn-outline-primary btn-lg btn-block" href="/" role="button">Отслеживание статуса</a>
+                                <a class="btn btn-outline-primary btn-lg btn-block" href="/status" role="button">Отслеживание статуса</a>
                             </div>
                         </div>
-                        
-                        
                     </div>
                 </div>
             </div>

@@ -11,9 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', 'IndexController@ShowIndexPage');
+Route::get('/spravka', 'IndexController@ShowSpravkaPage');
+Route::get('/status', 'IndexController@ShowStatusPage');
+
 
 Auth::routes();
 
