@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Department;
 
 class IndexController extends Controller
 {
@@ -15,12 +16,11 @@ class IndexController extends Controller
     }
 
     public function ShowSpravkaPage(Request $request) {
-        $message = "";
         if($request->ajax()){
-            $message = ['Общеобразовательное', 'Информатики и ВТ', 'Экономики, права и ЗИО'];
-            return $message;
-        }
-        return view('spravka');
+            $department = Department::all();
+            return $department;
+        }else
+            return view('spravka');
     }
 
     public function ShowStatusPage() {

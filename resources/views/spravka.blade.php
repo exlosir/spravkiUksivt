@@ -26,7 +26,7 @@
             <div class="card w-50">
                 <h5 class="card-header text-center bheader">Заказ справки</h5>
                 <div class="card-body">
-                    <form action="" method="POST" id="send_zayav">
+                    <form action="spravka/send" method="POST" id="send_zayav">
                         {{ csrf_field() }}
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -63,7 +63,7 @@
                                 <span class="input-group-text">Отделение</span>
                             </div>
                             <select name="department" class="form-control">
-                                <option value="...">...</option>
+                                <option value="">...</option>
                             </select>
                         </div>
                         <div class="input-group mb-3">
@@ -71,7 +71,7 @@
                                 <span class="input-group-text">Основа обучения</span>
                             </div>
                             <select name="osn_obuch" class="form-control">
-                                <option value="Бюджет">...</option>
+                                <option value="">...</option>
                                 <option value="Бюджет">Бюджет</option>
                                 <option value="Коммерция">Коммерция</option>
                             </select>

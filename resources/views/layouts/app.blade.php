@@ -20,7 +20,25 @@
                         ГБПОУ УКСИВТ | Заказ справок
                     </div>
                     <div class="col-sm-6 col-xs-8">
-                        <a href="/login" class="btn btn-primary">Вход на сайт</a>
+                        @guest
+                            <a href="/login" class="btn btn-primary">Вход на сайт</a>
+                        @endguest
+                        @auth
+                            {{-- <a href="/home" class="btn btn-primary">Домашняя страница</a>
+                            <a href="/logout" class="btn btn-primary">Выход</a> --}}
+                            <div class="dropdown">
+                                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{Auth::user()->Familiya . " " .Auth::user()->Imya}}
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <a href="/home" class="btn dropdown-item">Домашняя страница</a>
+                                    @can('isAdmin', User::class)
+                                        <a href="/admin" class="btn dropdown-item">Админ панель</a>
+                                    @endcan
+                                    <a href="/logout" class="btn dropdown-item">Выход</a>
+                                </div>
+                            </div>
+                        @endauth
                     </div>
                 </div>
             </div>

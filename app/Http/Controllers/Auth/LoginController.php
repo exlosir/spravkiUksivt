@@ -40,4 +40,5 @@ class LoginController extends Controller
     public function username() { // переключаем авторизацию по логину
         return 'username';
     }
+
 }

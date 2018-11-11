@@ -13,9 +13,15 @@
 
 Route::get('/', 'IndexController@ShowIndexPage');
 Route::get('/spravka', 'IndexController@ShowSpravkaPage');
+Route::post('/spravka/send', 'JournalZayavController@SendZayav');
 Route::get('/status', 'IndexController@ShowStatusPage');
 
 
 Auth::routes();
+
+Route::get('/logout',function(){
+    Auth::logout();
+    return redirect('/login');
+});
 
 Route::get('/home', 'HomeController@index')->name('home');
