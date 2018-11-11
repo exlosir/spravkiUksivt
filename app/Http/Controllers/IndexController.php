@@ -15,12 +15,13 @@ class IndexController extends Controller
         return view('index', ['time'=> $currentTime, 'ip'=>$ip, 'string'=>$string]);
     }
 
-    public function ShowSpravkaPage(Request $request) {
-        if($request->ajax()){
-            $department = Department::all();
-            return $department;
-        }else
-            return view('spravka');
+    public function ShowSpravkaPage() {
+        // if($request->ajax()){
+        //     $department = Department::all();
+        //     return $department;
+        // }else
+        $department = Department::all();
+            return view('spravka', compact('department'));
     }
 
     public function ShowStatusPage() {

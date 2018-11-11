@@ -27,12 +27,14 @@ class CreateJournalZayavsTable extends Migration
             ]);
             // $table->integer('type_id');
             $table->text('organization');
+            $table->text('are');
             $table->enum('status',[
                 'Принята',
                 'На подписи',
                 'Отклонена',
                 'Готова'
-            ]);
+                ]);
+            $table->text('comment');
             $table->timestamps();
         });
     }

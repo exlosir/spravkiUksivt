@@ -64,6 +64,9 @@
                             </div>
                             <select name="department" class="form-control">
                                 <option value="">...</option>
+                                @foreach ($department as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="input-group mb-3">
