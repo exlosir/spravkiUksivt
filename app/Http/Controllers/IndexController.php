@@ -9,10 +9,9 @@ use App\Department;
 class IndexController extends Controller
 {
     public function ShowIndexPage(Request $request) {
-        $currentTime = Carbon::now()->toDateTimeString();
-        $ip = $request->ip();
-        $string = self::getUnicNumber($currentTime, $ip);
-        return view('index', ['time'=> $currentTime, 'ip'=>$ip, 'string'=>$string]);
+        
+        $string = self::getUnicNumber($request);
+        return view('index', ['string'=>$string]);
     }
 
     public function ShowSpravkaPage() {
@@ -28,7 +27,9 @@ class IndexController extends Controller
         return view('status');
     }
 
-    public function getUnicNumber($timestamp, $ip) { //генерация уникального ID для заявки
+    public function getUnicNumber(Request $request) { //генерация уникального ID для заявки
+        $timestamp = Carbon::now()->toDateTimeString();
+        $ip = $request->ip();
         $timestamp = str_replace(['-',' ', ':'],'',$timestamp); // вырезаем из строки все лишние символы
         $ip = str_replace('.','',$ip); // вырезем точки из ip
         $strlen = str_shuffle($timestamp.$ip); // перемешиваем рандомно строку

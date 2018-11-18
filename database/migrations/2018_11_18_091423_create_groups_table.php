@@ -15,13 +15,11 @@ class CreateGroupsTable extends Migration
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->enum('name',[
-                'ЗИО','ИС','И','КСК','П','ПО','ПД','ПСА','Э','уКС'
-            ]); // Буква специальности
-            $table->string('year'); // год поступления
-            $table->integer('numeric'); // номер группы
+            $table->integer('number');
+            $table->integer('year'); // год поступления
             $table->integer('specialty_id');
             $table->integer('department_id');
+            $table->integer('order_id'); // приказ о зачислении
         });
     }
 
