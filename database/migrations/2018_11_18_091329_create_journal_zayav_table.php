@@ -16,13 +16,15 @@ class CreateJournalZayavTable extends Migration
         Schema::create('journal_zayav', function (Blueprint $table) {
             $table->increments('id');
             $table->string('identify');
-            $table->integer('student_id');
-            $table->integer('type_id');
+            $table->integer('student_id')->unsigned();
+            $table->integer('type_id')->unsigned();
             $table->text('Organization');
             $table->enum('status', ['Принята', 'На подписи','Готова','Отклонена']);
             $table->text('comment');
             $table->timestamps();
         });
+
+
     }
 
     /**

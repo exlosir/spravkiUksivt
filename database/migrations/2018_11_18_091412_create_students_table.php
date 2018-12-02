@@ -15,7 +15,7 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('group_id');
+            $table->integer('group_id')->unsigned();
             $table->string('familiya');
             $table->string('imya');
             $table->string('otchestvo');
@@ -23,6 +23,8 @@ class CreateStudentsTable extends Migration
             $table->enum('osn_obuch', ['Бюджет','Коммерция']);
             $table->enum('status_student', ['Учится','В Академическом отпуске','Отчислен']);
         });
+
+
     }
 
     /**

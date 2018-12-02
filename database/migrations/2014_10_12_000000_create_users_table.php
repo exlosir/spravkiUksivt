@@ -20,9 +20,10 @@ class CreateUsersTable extends Migration
             $table->string('otchestvo');
             $table->string('username')->unique();
             $table->string('password');
-            $table->integer('department_id')->nullable();
+            $table->integer('department_id')->nullable()->unsigned();
             $table->rememberToken();
         });
+
     }
 
     /**

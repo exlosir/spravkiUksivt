@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOrderStudentTable extends Migration
+class UpdateGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateOrderStudentTable extends Migration
      */
     public function up()
     {
-        Schema::create('order_student', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('order_id')->unsigned();
-            $table->integer('student_id')->unsigned();
+        Schema::table('groups', function(Blueprint $table){
+            $table->foreign('specialty_id')->references('id')->on('specialties');
+            $table->foreign('department_id')->references('id')->on('departments');
         });
-
-
     }
 
     /**
@@ -29,6 +26,6 @@ class CreateOrderStudentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_student');
+        //
     }
 }

@@ -15,9 +15,9 @@ class CreateSpecialtiesTable extends Migration
     {
         Schema::create('specialties', function (Blueprint $table) {
             $table->increments('id');
-            $rable->string('name');
-            $rable->string('short_name');
-            $rable->string('period_obuch');
+            $table->string('name');
+            $table->string('short_name');
+            $table->string('period_obuch');
         });
     }
 

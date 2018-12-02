@@ -30,7 +30,11 @@ class User extends Authenticatable
     ];
 
     public function roles(){
-        return $this->belongsToMany("App\Role");
+        return $this->belongsToMany("App\Role", 'user_role');
+    }
+
+    public function department() { // получение отделения пользователя
+        return $this->belongsTo('App\Department', 'department_id', 'id');
     }
 
 }

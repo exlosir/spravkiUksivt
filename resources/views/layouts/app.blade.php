@@ -24,11 +24,9 @@
                             <a href="/login" class="btn btn-primary">Вход на сайт</a>
                         @endguest
                         @auth
-                            {{-- <a href="/home" class="btn btn-primary">Домашняя страница</a>
-                            <a href="/logout" class="btn btn-primary">Выход</a> --}}
                             <div class="dropdown">
                                 <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{Auth::user()->Familiya . " " .Auth::user()->Imya}}
+                                    {{Auth::user()->familiya . " " .Auth::user()->imya}}
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                     <a href="/home" class="btn dropdown-item">Домашняя страница</a>

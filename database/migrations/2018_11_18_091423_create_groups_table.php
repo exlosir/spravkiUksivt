@@ -17,10 +17,12 @@ class CreateGroupsTable extends Migration
             $table->increments('id');
             $table->integer('number');
             $table->integer('year'); // год поступления
-            $table->integer('specialty_id');
-            $table->integer('department_id');
-            $table->integer('order_id'); // приказ о зачислении
+            $table->integer('specialty_id')->unsigned();
+            $table->integer('department_id')->unsigned();
+            $table->integer('order_id')->unsigned(); // приказ о зачислении
         });
+
+
     }
 
     /**
