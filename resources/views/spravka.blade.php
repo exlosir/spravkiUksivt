@@ -21,7 +21,7 @@
                 </button>
             </div>
         </div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mb-4">
 
             <div class="card w-50">
                 <h5 class="card-header text-center bheader">Заказ справки</h5>
@@ -63,7 +63,7 @@
                                 <span class="input-group-text">Отделение</span>
                             </div>
                             <select name="department" class="form-control">
-                                <option value="">...</option>
+                                <option value="">Не выбрано</option>
                                 @foreach ($department as $item)
                                     <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
@@ -74,7 +74,7 @@
                                 <span class="input-group-text">Основа обучения</span>
                             </div>
                             <select name="osn_obuch" class="form-control">
-                                <option value="">...</option>
+                                <option value="">Не выбрано</option>
                                 <option value="Бюджет">Бюджет</option>
                                 <option value="Коммерция">Коммерция</option>
                             </select>

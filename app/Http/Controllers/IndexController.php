@@ -31,7 +31,7 @@ class IndexController extends Controller
         $timestamp = Carbon::now()->toDateTimeString();
         $ip = $request->ip();
         $timestamp = str_replace(['-',' ', ':'],'',$timestamp); // вырезаем из строки все лишние символы
-        $ip = str_replace('.','',$ip); // вырезем точки из ip
+        $ip = str_replace('.','',$ip); // вырезаем точки из ip
         $strlen = str_shuffle($timestamp.$ip); // перемешиваем рандомно строку
         $newstr = "";
         for($i = 0; $i <= strlen($strlen)/6;$i++) { // вставляем разделители
