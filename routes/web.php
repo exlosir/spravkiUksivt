@@ -29,11 +29,32 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware'=> 'auth', 'prefix'=>'home'], function(){
     Route::get('spravki', function(){ return "Справки";})->name('zayavleniya');
     Route::get('students', function(){ return "Студенты";})->name('students');
-    Route::get('groups', function(){ return "Группы";})->name('groups');
     Route::get('orders', function(){ return "Приказы";})->name('orders');
-    Route::get('departments', function(){ return "Отделения";})->name('departments');
-    Route::get('specialties', function(){ return "Специальности";})->name('specialties');
-    
+
+    Route::group(['prefix'=>'orders'], function(){
+        Route::get('/','OrderController@Index')->name('orders');
+        Route::get('/new','OrderController@NewOrder')->middleware('admin')->name('new_order');
+        Route::post('/new/add','OrderController@AddNewOrder')->middleware('admin')->name('add_new_order');
+        Route::delete('/delete/{id}', 'OrderController@Delete')->middleware('admin')->name('delete_order');
+    });
+    Route::group(['prefix'=>'groups'], function(){
+        Route::get('/','GroupController@Index')->name('groups');
+        Route::get('/new','GroupController@NewGroup')->middleware('admin')->name('new_group');
+        Route::post('/new/add','GroupController@AddNewGroup')->middleware('admin')->name('add_new_group');
+        Route::delete('/delete/{id}', 'GroupController@Delete')->middleware('admin')->name('delete_group');
+    });
+    Route::group(['prefix'=>'departments'], function(){
+        Route::get('/','DepartmentController@Index')->name('departments');
+        Route::get('/new','DepartmentController@NewDep')->middleware('admin')->name('new_dep');
+        Route::post('/new/add','DepartmentController@AddNewDep')->middleware('admin')->name('add_new_dep');
+        Route::delete('/delete/{id}', 'DepartmentController@Delete')->middleware('admin')->name('delete_dep');
+    });
+    Route::group(['prefix'=>'specialties'], function(){
+        Route::get('/','SpecialtyController@Index')->name('specialties');
+        Route::get('/new','SpecialtyController@NewSpec')->middleware('admin')->name('new_spec');
+        Route::post('/new/add','SpecialtyController@AddNewSpec')->middleware('admin')->name('add_new_spec');
+        Route::delete('/delete/{id}', 'SpecialtyController@Delete')->middleware('admin')->name('delete_spec');
+    });
     Route::group(['prefix'=>'type_spravka'], function(){
         Route::get('/','TypesSpravkaController@Index')->name('type_spravki');
         Route::get('/new','TypesSpravkaController@NewType')->middleware('admin')->name('new_type_spravki');
