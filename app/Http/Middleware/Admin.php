@@ -16,10 +16,11 @@ class Admin
     public function handle($request, Closure $next)
     {
         foreach($request->user()->roles->pluck('name') as $role) {
-            if(!$role == 'Администратор'){
-                return redirect()->back()->with('error', 'Доступ к разделу администратора запрещен! Недостаточно прав.');
+            // dd($role);
+            if($role == 'Администратор'){
+                return $next($request);
             }
         }
-        return $next($request);
+        return redirect()->back()->withErrors(array('Ошибка доступа' => 'Доступ к разделу администратора запрещен! Недостаточно прав.'));
     }
 }

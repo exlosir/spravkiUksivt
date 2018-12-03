@@ -39,19 +39,17 @@ class UsersController extends Controller
         $user->username = $request->username;
         $user->password = bcrypt($request->password);
         $user->department_id = $request->department;
-        // $user->role = $request->role;
         $user->save();
 
-        // $user->roles()->pivot()->create([
-        //     'user_id'=>$user->id,
-        //     'role_id'=>$request->role
-        // ]);
-        
-        // return redirect()->route('users')->with('success', 'Пользователь успешно создан!');
+        $user->roles()->attach($request->role); // добавление роли пользователю
+        return redirect()->route('users')->with('success', 'Пользователь успешно создан!');
     }
 
     public function Delete($id) {
         $user = User::find($id);
+        foreach ($user->roles as $role) {
+            $user->roles()->detach($role->id);
+        }
         $user->delete();
         return redirect()->back()->with('success', 'Пользователь успешно удален!');
     }

@@ -39,7 +39,7 @@ Route::group(['middleware'=> 'auth', 'prefix'=>'home'], function(){
     Route::group(['prefix'=>'users'], function(){ // работа с пользователями
         Route::get('/', 'UsersController@Index')->name('users');
         Route::get('/new', 'UsersController@NewUser')->name('new_user');
-        Route::post('/new/add', 'UsersController@AddNewUser')->name('add_new_user');
+        Route::post('/new/add', 'UsersController@AddNewUser')->middleware('admin')->name('add_new_user');
         Route::delete('/delete/{id}', 'UsersController@Delete')->middleware('admin')->name('delete_user');
     });
     
