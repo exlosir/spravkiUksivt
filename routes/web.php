@@ -33,12 +33,16 @@ Route::group(['middleware'=> 'auth', 'prefix'=>'home'], function(){
     Route::get('orders', function(){ return "Приказы";})->name('orders');
     Route::get('departments', function(){ return "Отделения";})->name('departments');
     Route::get('specialties', function(){ return "Специальности";})->name('specialties');
-    Route::get('type_spravki', function(){ return "Типы справок";})->name('type_spravki');
     
-
+    Route::group(['prefix'=>'type_spravka'], function(){
+        Route::get('/','TypesSpravkaController@Index')->name('type_spravki');
+        Route::get('/new','TypesSpravkaController@NewType')->middleware('admin')->name('new_type_spravki');
+        Route::post('/new/add','TypesSpravkaController@AddNewType')->middleware('admin')->name('add_new_type_spravki');
+        Route::delete('/delete/{id}', 'TypesSpravkaController@Delete')->middleware('admin')->name('delete_type_spravki');
+    });
     Route::group(['prefix'=>'users'], function(){ // работа с пользователями
         Route::get('/', 'UsersController@Index')->name('users');
-        Route::get('/new', 'UsersController@NewUser')->name('new_user');
+        Route::get('/new', 'UsersController@NewUser')->middleware('admin')->name('new_user');
         Route::post('/new/add', 'UsersController@AddNewUser')->middleware('admin')->name('add_new_user');
         Route::delete('/delete/{id}', 'UsersController@Delete')->middleware('admin')->name('delete_user');
     });
