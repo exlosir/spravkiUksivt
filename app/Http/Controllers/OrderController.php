@@ -14,26 +14,36 @@ class OrderController extends Controller
     }
 
     public function NewOrder() {
-        $type_orders = TypeOrder::all();
-        return view('home.orders.new', compact('type_orders'));
+        $type = TypeOrder::all();
+        return view('home.orders.new', compact('type'));
     }
 
-    public function AddNewOrder(Request $request) {
+    public function NewStudentOrder() {
+        return view('home.orders.order_student');
+    }
+
+    public function AddNewStudentOrder() {
+
+    }
+
+    public function AddNewOrder(Request $request) { 
         $request->validate([
-            'name'=>'required'
+            'number'=>'required|integer',
+            'date'=>'required'
         ]);
         $order = new Order();
 
-        $order->name = $request->name;
+        $order->number = $request->number;
+        $order->date = $request->date;
         $order->save();
 
-        return redirect()->back()->with('success', 'Приказ успешно добавлена!');
+        return redirect()->back()->with('success', 'Приказ успешно добавлен!');
     }
 
     public function Delete($id) {
-        $order = Department::find($id);
+        $order = Order::find($id);
 
         $order->delete();
-        return redirect()->back()->with('success', 'Приказ успешно удалена!');
+        return redirect()->back()->with('success', 'Приказ успешно удален!');
     }
 }

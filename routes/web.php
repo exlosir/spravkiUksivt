@@ -29,13 +29,16 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware'=> 'auth', 'prefix'=>'home'], function(){
     Route::get('spravki', function(){ return "Справки";})->name('zayavleniya');
     Route::get('students', function(){ return "Студенты";})->name('students');
-    Route::get('orders', function(){ return "Приказы";})->name('orders');
+    // Route::get('orders', function(){ return "Приказы";})->name('orders');
 
     Route::group(['prefix'=>'orders'], function(){
         Route::get('/','OrderController@Index')->name('orders');
         Route::get('/new','OrderController@NewOrder')->middleware('admin')->name('new_order');
         Route::post('/new/add','OrderController@AddNewOrder')->middleware('admin')->name('add_new_order');
         Route::delete('/delete/{id}', 'OrderController@Delete')->middleware('admin')->name('delete_order');
+        
+        Route::get('/new/student_order','OrderController@NewStudentOrder')->middleware('admin')->name('new_student_order');
+        Route::post('/new/student_order/add','OrderController@AddNewStudentOrder')->middleware('admin')->name('add_new_student_order');
     });
     Route::group(['prefix'=>'groups'], function(){
         Route::get('/','GroupController@Index')->name('groups');

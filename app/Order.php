@@ -15,7 +15,9 @@ class Order extends Model
     //     3 => 'Восстановление',
     // ];
 
+    public $timestamps = false;
+
     public function type_orders() {
-        return $this->belongsTo('App\TypeOrder');
+        return $this->belongsTo('App\TypeOrder', 'type', 'id');
     }
 }
