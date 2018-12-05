@@ -29,7 +29,7 @@
 
     {{-- Начало блока добавления отделения --}}
 
-    <a href="{{route('new_dep')}}" class="btn btn-block btn-outline-info mb-4">Добавить отделение</a>
+    @can('isAdmin', User::class) <a href="{{route('new_dep')}}" class="btn btn-block btn-outline-info mb-4">Добавить отделение</a> @endcan
 
     {{-- Конец блока добавления отделения --}}
     {{-- <div class="row justify-content-center"> --}}
@@ -44,7 +44,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Наименование</th>
-                                <th scope="col">Изменение/Удаление</th>
+                                @can('isAdmin', User::class) <th scope="col">Изменение/Удаление</th> @endcan
                             </tr>
                         </thead>
                         <tbody>
@@ -52,6 +52,7 @@
                             <tr>
                                 <th scope="row">{{$item->id}}</th>
                                 <td>{{$item->name}}</td>
+                                @can('isAdmin', User::class)
                                 <td><a href="" class="btn btn-warning">Изменить</a>
                                     <form class="d-inline" action="{{route('delete_dep', $item->id)}}" method="POST">
                                         {{ csrf_field() }}
@@ -59,6 +60,7 @@
                                         <button class="btn btn-danger" onclick="return confirm('Удалить отделение?')">Удалить</button>
                                     </form>
                                 </td>
+                                @endcan
                             </tr>
                             @endforeach
                         </tbody>

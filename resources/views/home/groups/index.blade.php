@@ -29,7 +29,7 @@
 
     {{-- Начало блока добавления группы --}}
 
-    <a href="{{route('new_group')}}" class="btn btn-block btn-outline-info mb-4">Добавить группу</a>
+    @can('isAdmin', User::class) <a href="{{route('new_group')}}" class="btn btn-block btn-outline-info mb-4">Добавить группу</a> @endcan
 
     {{-- Конец блока добавления группы --}}
     {{-- <div class="row justify-content-center"> --}}
@@ -48,6 +48,7 @@
                                 <th scope="col">Специальность</th>
                                 <th scope="col">Отделение</th>
                                 <th scope="col">Приказ о зачислении</th>
+                                @can('isAdmin', User::class) <th scope="col">Изменение/Удаление</th> @endcan
                             </tr>
                         </thead>
                         <tbody>
@@ -58,14 +59,16 @@
                                 <td>{{$item->year}}</td>
                                 <td>{{$item->specialties->name}}</td>
                                 <td>{{$item->departments->name}}</td>
-                                {{-- <td>{{$item->orders->number}} от {{$item->orders->date}}</td> --}}
+                                <td>{{$item->orders->number}} от {{\Carbon\Carbon::parse($item->orders->date)->format('d.m.Y')}}</td>
+                                @can('isAdmin', User::class)
                                 <td><a href="" class="btn btn-warning">Изменить</a>
                                     <form class="d-inline" action="{{route('delete_group', $item->id)}}" method="POST">
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }}
-                                        <button class="btn btn-danger" onclick="return confirm('Удалить отделение?')">Удалить</button>
+                                        <button class="btn btn-danger" onclick="return confirm('Удалить группу?')">Удалить</button>
                                     </form>
                                 </td>
+                                @endcan
                             </tr>
                             @endforeach
                         </tbody>

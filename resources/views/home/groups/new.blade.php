@@ -81,7 +81,7 @@
                 <select name="order" class="form-control">
                     <option value="">Не выбрано</option>
                     @foreach ($order as $item)
-                        <option value="{{$item->id}}">№{{$item->number}} от {{\Carbon\Carbon::parse($item->date)->format('d.m.Y')}}</option>
+                        <option value="{{$item->id}}">{{$item->number}} от {{\Carbon\Carbon::parse($item->date)->format('d.m.Y')}}</option>
                     @endforeach
                 </select>
             </div>

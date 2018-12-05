@@ -22,22 +22,27 @@ class GroupController extends Controller
         return view('home.groups.new', compact('spec', 'dep', 'order'));
     }
 
-    // public function AddNewGroup(Request $request) {
-    //     $request->validate([
-    //         'name'=>'required'
-    //     ]);
-    //     $grp = new Group();
+    public function AddNewGroup(Request $request) {
+        $request->validate([
+            'number'=>'required|integer',
+            'year'=>'required|integer',
+            'spec'=>'required',
+            'dep'=>'required',
+            'order'=>'required'
+        ]);
+        $grp = new Group();
+        $grp->number = $request->number;
+        $grp->year = $request->year;
+        $grp->specialty_id = $request->spec;
+        $grp->department_id = $request->dep;
+        $grp->order_id = $request->order;
+        $grp->save();
+        return redirect()->back()->with('success', 'Группа успешно добавлена!');
+    }
 
-    //     $grp->name = $request->name;
-    //     $grp->save();
-
-    //     return redirect()->back()->with('success', 'Группа успешно добавлена!');
-    // }
-
-    // public function Delete($id) {
-    //     $grp = Group::find($id);
-
-    //     $grp->delete();
-    //     return redirect()->back()->with('success', 'Группа успешно удалена!');
-    // }
+    public function Delete($id) {
+        $grp = Group::find($id);
+        $grp->delete();
+        return redirect()->back()->with('success', 'Группа успешно удалена!');
+    }
 }
