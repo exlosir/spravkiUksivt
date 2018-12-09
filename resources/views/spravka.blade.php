@@ -13,13 +13,22 @@
     @endforeach
     @endif
 
+    @if(\Session::has('success'))
+    <div class="alert alert-success alert-dismissible fade show p-4" role="alert">
+        {!! session('success') !!}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    @endif
+
     <div class="row justify-content-center">
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
             В случае заполнения формы <strong>неверными данными</strong>, заявка будет отклонена!
             Краткая информация по <strong>
                 <!-- Button trigger modal -->
                 <a href="" class="text-info pointer" data-toggle="modal" data-target="#exampleModalCenter">
-                    заказу справок
+                    оформлению заявки
                 </a>
             </strong>
 
@@ -74,7 +83,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">Организация</span>
                         </div>
-                        <input type="text" class="form-control" name="area" placeholder="Соц.защита Орджоникидзевского района">
+                        <input type="text" class="form-control" name="organization" placeholder="Соц.защита Орджоникидзевского района">
                     </div>
                     <input type="submit" class="btn btn-outline-success btn-block" value="Отправить заявку">
                 </form>

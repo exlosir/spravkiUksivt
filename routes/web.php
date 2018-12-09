@@ -15,6 +15,7 @@ Route::get('/', 'IndexController@ShowIndexPage');
 Route::get('/spravka', 'IndexController@ShowSpravkaPage');
 Route::post('/spravka/send', 'JournalZayavController@SendZayav');
 Route::get('/status', 'IndexController@ShowStatusPage');
+Route::post('/status/full', 'JournalZayavController@GetStatus');
 
 
 Auth::routes();
