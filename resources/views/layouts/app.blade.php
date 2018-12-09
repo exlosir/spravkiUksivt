@@ -12,7 +12,7 @@
     <script src="{{asset('js/main.js')}}"></script>
 </head>
 <body>
-    <header>
+    <header class="mb-4">
         <nav class="nav">
             <div class="container-fluid">
                 <div class="row justify-content-center text-center align-items-center">

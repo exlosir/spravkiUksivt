@@ -27,10 +27,19 @@ Route::get('/logout',function(){
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware'=> 'auth', 'prefix'=>'home'], function(){
-    Route::get('spravki', function(){ return "Справки";})->name('zayavleniya');
-    Route::get('students', function(){ return "Студенты";})->name('students');
-    // Route::get('orders', function(){ return "Приказы";})->name('orders');
-
+    // Route::get('spravki', function(){ return "Справки";})->name('zayavleniya');
+    Route::group(['prefix'=>'statement'], function(){
+        Route::get('/','JournalZayavController@Index')->name('statements');
+        Route::get('/new','JournalZayavController@NewStatement')->middleware('admin')->name('new_statement');
+        Route::post('/new/add','JournalZayavController@AddNewStatement')->middleware('admin')->name('add_new_statement');
+        Route::delete('/delete/{id}', 'JournalZayavController@Delete')->middleware('admin')->name('delete_statement');
+    });
+    Route::group(['prefix'=>'students'], function(){
+        Route::get('/','StudentController@Index')->name('students');
+        Route::get('/new','StudentController@NewStudent')->middleware('admin')->name('new_student');
+        Route::post('/new/add','StudentController@AddNewStudent')->middleware('admin')->name('add_new_student');
+        Route::delete('/delete/{id}', 'StudentController@Delete')->middleware('admin')->name('delete_student');
+    });
     Route::group(['prefix'=>'orders'], function(){
         Route::get('/','OrderController@Index')->name('orders');
         Route::get('/new','OrderController@NewOrder')->middleware('admin')->name('new_order');
