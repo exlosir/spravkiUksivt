@@ -34,7 +34,7 @@
                 @endswitch
                 <div class="card-body">
                     <h6 class="card-title text-center">
-                       <b>Номер заявки - <h5>{{$zayav->identify}}</h5></b>
+                       <b>Номер заявки <h5>{{$zayav->identify}}</h5></b>
                     </h6>
                     
                     <hr>
@@ -54,11 +54,11 @@
                 </div>
                 <div class="card-footer">
                     <div class="row">
-                        <div class="col-6">
-                            Создано: {{$zayav->created_at}}
+                        <div class="col-6 text-center" data-toggle="tooltip" data-placement="top" title="{{$zayav->created_at}}">
+                            Создано {{$zayav->created_at->diffForHumans()}}
                         </div>
-                        <div class="col-6">
-                            Обновлено: {{$zayav->updated_at}}
+                        <div class="col-6 text-center" data-toggle="tooltip" data-placement="top" title="{{$zayav->updated_at}}">
+                            Обновлено {{$zayav->updated_at->diffForHumans()}}
                         </div>
                     </div>
                 </div>

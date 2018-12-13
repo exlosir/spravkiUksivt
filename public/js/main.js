@@ -20,3 +20,17 @@
 //         // });
 //     }
 // });
+
+$(document).ready(function(){
+    $('#declineZayav').on('show.bs.modal', function (e) {
+
+        var button = $(e.relatedTarget);
+        var modal = $(this);
+        var title = button.data('fio');
+        var id = button.data('id');
+
+
+        modal.find('.modal-title').append(title);
+        modal.find('.modal-body input[name="id"]').val(id);
+    })
+});

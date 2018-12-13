@@ -23,8 +23,53 @@ class JournalZayavController extends Controller
     }
 
     public function Index() {
-        $states = Journal_zayav::all();
-        return view('home.statements.index', compact('states'));
+        $statements = Journal_zayav::orderBy('id','desc')->get();
+        return view('home.statements.index', compact('statements'));
+    }
+
+    public function IndexSorted($field_sort) {
+        switch($field_sort){
+            case 'new': {
+                $field_sort = 'Принята';
+                break;
+            }
+            case 'accept': {
+                $field_sort = 'Готова';
+                break;
+            }
+            case 'decline': {
+                $field_sort = 'Отклонена';
+                break;
+            }
+            case 'signature': {
+                $field_sort = 'На подписи';
+                break;
+            }
+        }
+        $statements = Journal_zayav::where('status',status_zayav::where('name',$field_sort)->get()->first()->id)->orderBy('created_at','desc')->get();
+        return view('home.statements.index', compact('statements'));
+    }
+
+    public function Chstatus(Request $request) {
+        $zayav = Journal_zayav::find($request->id);
+        $status = "";
+        switch($request->status){
+            case 'accept': {
+                $status = 'Готова';
+                break;
+            }
+            case 'decline': {
+                $status = 'Отклонена';
+                break;
+            }
+            case 'signature': {
+                $status = 'На подписи';
+                break;
+            }
+        }
+        $zayav->status = status_zayav::where('name',$status)->get()->first()->id;
+        $zayav->save();
+        return  redirect()->back()->with('success', 'Статус успешно изменен на '. $status);
     }
 
     public function NewStatement() {
@@ -90,7 +135,6 @@ class JournalZayavController extends Controller
             'code'=>'required'
         ]);
         $zayav = Journal_zayav::firstOrFail()->where('identify',$request->code)->get()->first();
-        // dd($zayav);
         return view('full_status', compact('zayav'));
     }
 }

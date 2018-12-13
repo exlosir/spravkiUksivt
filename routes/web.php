@@ -28,9 +28,10 @@ Route::get('/logout',function(){
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware'=> 'auth', 'prefix'=>'home'], function(){
-    // Route::get('spravki', function(){ return "Справки";})->name('zayavleniya');
     Route::group(['prefix'=>'statement'], function(){
         Route::get('/','JournalZayavController@Index')->name('statements');
+        Route::get('/{sorted}','JournalZayavController@IndexSorted');
+        Route::post('/change/status','JournalZayavController@Chstatus')->middleware('admin')->name('chstatus');
         Route::get('/new','JournalZayavController@NewStatement')->middleware('admin')->name('new_statement');
         Route::post('/new/add','JournalZayavController@AddNewStatement')->middleware('admin')->name('add_new_statement');
         Route::delete('/delete/{id}', 'JournalZayavController@Delete')->middleware('admin')->name('delete_statement');
