@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Journal_zayav;
+use App\journal_spravok;
 use App\status_zayav;
 use Carbon\Carbon;
+use Auth;
 
 class JournalZayavController extends Controller
 {
@@ -22,12 +24,29 @@ class JournalZayavController extends Controller
         return trim($newstr,"-"); // удаляем с начала и конца разделители если есть и возвращаем строку
     }
 
-    public function Index() {
-        $statements = Journal_zayav::orderBy('id','desc')->get();
+    public function Index(Request $request) {
+        $auth = Auth::user();
+        $isAdmin = false;
+        foreach ($auth->roles as $role)
+            if($role->name == 'Администратор')
+                $isAdmin = true;
+            if($isAdmin)
+                $statements = Journal_zayav::orderBy('created_at','desc')->get();
+            else
+                $statements = Journal_zayav::whereHas('groups', function($query){
+                    $auth = Auth::user();
+                    $query->where('department_id',$auth->department_id);
+                })->orderBy('id','desc')->get();
         return view('home.statements.index', compact('statements'));
     }
 
     public function IndexSorted($field_sort) {
+        $auth = Auth::user();
+        $isAdmin = false;
+        foreach ($auth->roles as $role)
+            if($role->name == 'Администратор')
+                $isAdmin = true;
+
         switch($field_sort){
             case 'new': {
                 $field_sort = 'Принята';
@@ -46,7 +65,14 @@ class JournalZayavController extends Controller
                 break;
             }
         }
-        $statements = Journal_zayav::where('status',status_zayav::where('name',$field_sort)->get()->first()->id)->orderBy('created_at','desc')->get();
+
+        if($isAdmin)
+            $statements = Journal_zayav::where('status',status_zayav::where('name',$field_sort)->get()->first()->id)->orderBy('created_at','desc')->get();
+        else
+            $statements = Journal_zayav::whereHas('groups',function($query){
+                $auth = Auth::user();
+                $query->where('department_id',$auth->department_id);
+            })->where('status',status_zayav::where('name',$field_sort)->get()->first()->id)->orderBy('created_at','desc')->get();
         return view('home.statements.index', compact('statements'));
     }
 
@@ -67,8 +93,17 @@ class JournalZayavController extends Controller
                 break;
             }
         }
-        $zayav->status = status_zayav::where('name',$status)->get()->first()->id;
+        if($status == 'На подписи') {
+            $zayav->status = status_zayav::where('name',$status)->get()->first()->id;
+            $spravka = New journal_spravok();
+            $spravka->zayav_id = $request->id;
+            $spravka->date = \Carbon\Carbon::now();
+            
+        }
+        else
+            $zayav->status = status_zayav::where('name',$status)->get()->first()->id;
         $zayav->save();
+        $spravka->save();
         return  redirect()->back()->with('success', 'Статус успешно изменен на '. $status);
     }
 

@@ -57,7 +57,7 @@
     {{-- Конец блока добавления заявки --}}
     {{-- <div class="row justify-content-center"> --}}
         {{-- <div class="col-12"> --}}
-            <div class="card">
+            <div class="card mb-2">
                 <div class="card-header bg-info">Заявления</div>
 
                 <div class="card-body">
@@ -108,6 +108,7 @@
                                                         <form method="POST" action="{{route('chstatus')}}">
                                                             {{csrf_field()}}
                                                             <input type="hidden" name="status" value="signature">
+                                                            <input type="hidden" name="identify" value="{{$item->identify}}">
                                                             <input type="hidden" name="id" value="{{$item->id}}">
                                                             <button class="btn btn-info">На подписи</button>
                                                         </form>
