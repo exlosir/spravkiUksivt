@@ -10,6 +10,10 @@ use App\Student;
 use Carbon\Carbon;
 use Auth;
 
+use PHPExcel; 
+use PHPExcel_IOFactory;
+use PHPExcel_Style_Border;
+
 class JournalZayavController extends Controller
 {
     public function getUnicNumber(Request $request) { //генерация уникального ID для заявки
@@ -25,7 +29,19 @@ class JournalZayavController extends Controller
         return trim($newstr,"-"); // удаляем с начала и конца разделители если есть и возвращаем строку
     }
 
-    public function createNepolnSpravka($zayav){
+    public function getFIO($_FIO, $_gender){
+        $gender = null;
+        if($_gender == 'man')
+            $gender = \NCL\NCL::$MAN;
+        else
+            $gender = \NCL\NCL::$WOMAN;
+            
+        $case = new \NCL\NCLNameCaseRu();
+        $fio = explode(' ',$case->qFullName($_FIO['familiya'],$_FIO['imya'],$_FIO['otchestvo'], $gender, \NCL\NCL::$DATELN, "S N F"));
+        return $fio;
+    }
+
+    public function createNepolnSpravka($zayav, $student, $fio){
         $zayav = Journal_zayav::find($zayav);
         $dateNow = \Carbon\Carbon::Now();
         $course = NULL;
@@ -38,7 +54,7 @@ class JournalZayavController extends Controller
 
         $phpWord->setValue('number_sprv',$zayav->spravka->id);
         $phpWord->setValue('date_sprv',\Carbon\Carbon::parse($zayav->spravka->date)->format('d.m.Y'));
-        $phpWord->setValue('student',$zayav->familiya . ' '. $zayav->imya . ' '. $zayav->otchestvo);
+        $phpWord->setValue('student',$fio[0] . ' '. $fio[1] . ' '. $fio[2]);
         $phpWord->setValue('year',$zayav->year);
         $phpWord->setValue('number_order',$zayav->groups->orders->number);
         $phpWord->setValue('date_order',\Carbon\Carbon::parse($zayav->groups->orders->date)->format('d.m.Y'));
@@ -51,7 +67,7 @@ class JournalZayavController extends Controller
         return $name;
     }
 
-    public function createPolnayaSpravka($zayav, $student){
+    public function createPolnayaSpravka($zayav, $student, $fio){
         $dateNow = \Carbon\Carbon::Now(); // получение текущей даты
         $course = NULL;
         if($dateNow->year - $zayav->groups->year === 0)
@@ -79,7 +95,7 @@ class JournalZayavController extends Controller
 
         $phpWord->setValue('number_sprv',$zayav->spravka->id);
         $phpWord->setValue('date_sprv',\Carbon\Carbon::parse($zayav->spravka->date)->format('d.m.Y'));
-        $phpWord->setValue('student',$zayav->familiya . ' '. $zayav->imya . ' '. $zayav->otchestvo);
+        $phpWord->setValue('student',$fio[0] . ' '. $fio[1] . ' '. $fio[2]);
         $phpWord->setValue('year',$zayav->year);
         $phpWord->setValue('year_postup',$zayav->groups->year);
         $phpWord->setValue('number_order',$zayav->groups->orders->number);
@@ -99,7 +115,7 @@ class JournalZayavController extends Controller
         return $name;
     }
 
-    public function createPFSpravka($zayav, $student){
+    public function createPFSpravka($zayav, $student, $fio){
         $dateNow = \Carbon\Carbon::Now(); // получение текущей даты
         $course = NULL;
         if($dateNow->year - $zayav->groups->year === 0)
@@ -128,7 +144,7 @@ class JournalZayavController extends Controller
 
         $phpWord->setValue('number_sprv',$zayav->spravka->id);
         $phpWord->setValue('date_sprv',\Carbon\Carbon::parse($zayav->spravka->date)->format('d.m.Y'));
-        $phpWord->setValue('student',$zayav->familiya . ' '. $zayav->imya . ' '. $zayav->otchestvo);
+        $phpWord->setValue('student',$fio[0] . ' '. $fio[1] . ' '. $fio[2]);
         $phpWord->setValue('year',$zayav->year);
         $phpWord->setValue('course',$course);
         $phpWord->setValue('number_order',$zayav->groups->orders->number);
@@ -148,27 +164,91 @@ class JournalZayavController extends Controller
         return $name;
     }
 
-    public function Create_spravka($id){
+    public function Create_spravka(Request $request, $id){
         $zayav = Journal_zayav::find($id);
         $student = Student::where('familiya', $zayav->familiya)->where('imya', $zayav->imya)->where('otchestvo', $zayav->otchestvo)->where('year', $zayav->year)->where('group_id', $zayav->group_id)->first();
         if($student == null)
             return redirect()->back()->withErrors('Такой студент отстутствует в списках');
         else{
+            $fio = self::getFIO(['familiya'=>$student->familiya,'imya'=>$student->imya,'otchestvo'=>$student->otchestvo], $request->gender);
             switch($zayav->type_spravka->name) {
                 case 'Неполная справка': {
-                    $name = self::createNepolnSpravka($zayav, $student);
+                    $name = self::createNepolnSpravka($zayav, $student, $fio);
                     break;   
                 }
                 case 'Полная справка': {
-                    $name = self::createPolnayaSpravka($zayav, $student);
+                    $name = self::createPolnayaSpravka($zayav, $student, $fio);
                     break;   
                 }
                 case 'Справка в пенсионный фонд': {
-                    $name = self::createPFSpravka($zayav, $student);
+                    $name = self::createPFSpravka($zayav, $student, $fio);
                     break;   
                 }
             }
         }
+        return response()->download(storage_path($name));
+    }
+
+    public function Get_journal(){
+        $spravki = journal_spravok::all();
+        $_excel = PHPExcel_IOFactory::load(storage_path('templates/journal.xlsx'));
+
+        $_excel->setActiveSheetIndex(1);
+        $sheet = $_excel->getActiveSheet();
+        $row = 4;
+
+        $style = array(
+            'borders'=> array(
+                'bottom'     => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array(
+                    '	rgb' => '000000'
+                    )
+                ),
+                'top'     => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array(
+                        'rgb' => '000000'
+                    )
+                ),
+                'left'     => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array(
+                        'rgb' => '000000'
+                    )
+                ),
+                'right'     => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array(
+                        'rgb' => '000000'
+                    )
+                ),
+            )
+        );
+        foreach ($spravki as $item) {
+            $sheet->setCellValue('B'.$row, $item->id)->getStyle('B'.$row)->getFont()->setName('Calibri')->setSize('12'); // номер справки
+            $sheet->getRowDimension($row)->setRowHeight(20);
+            $sheet->setCellValue('C'.$row, $item->zayavka->identify)->getStyle('C'.$row)->getFont()->setName('Calibri')->setSize('12');// номер заявки
+            $sheet->setCellValue('D'.$row, $item->zayavka->familiya.' '.$item->zayavka->imya.' '.$item->zayavka->otchestvo)->getStyle('D'.$row)->getFont()->setName('Calibri')->setSize('12'); // ФИО
+            $sheet->setCellValue('E'.$row, ($item->zayavka->groups->year % 100).''. $item->zayavka->groups->specialties->short_name.'-'.$item->zayavka->groups->number)->getStyle('E'.$row)->getFont()->setName('Calibri')->setSize('12'); // Группа
+            $sheet->setCellValue('F'.$row, \Carbon\Carbon::parse($item->date)->format('d.m.Y'))->getStyle('F'.$row)->getFont()->setName('Calibri')->setSize('12'); // дата справки
+            $sheet->setCellValue('G'.$row, $item->zayavka->type_spravka->name)->getStyle('G'.$row)->getFont()->setName('Calibri')->setSize('12'); // тип справки
+            $sheet->setCellValue('H'.$row, $item->zayavka->Organization)->getStyle('H'.$row)->getFont()->setName('Calibri')->setSize('12'); // организация
+            
+            $sheet->getStyle('B'.$row)->applyFromArray($style);
+            $sheet->getStyle('C'.$row)->applyFromArray($style);
+            $sheet->getStyle('D'.$row)->applyFromArray($style);
+            $sheet->getStyle('E'.$row)->applyFromArray($style);
+            $sheet->getStyle('F'.$row)->applyFromArray($style);
+            $sheet->getStyle('G'.$row)->applyFromArray($style);
+            $sheet->getStyle('H'.$row)->applyFromArray($style);
+            
+            
+            $row++;
+        }
+        $objWriter = PHPExcel_IOFactory::createWriter($_excel, 'Excel5');
+        $name = 'Журнал справок от '.\Carbon\Carbon::now()->format('d.m.Y H:i:s').'.xls';
+        $objWriter->save(storage_path($name));
         return response()->download(storage_path($name));
     }
 

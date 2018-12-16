@@ -38,7 +38,7 @@
             <a href="/spravka" class="btn btn-block btn-outline-info mb-4">Создать заявку</a>
         </div>
         <div class="col-4">
-
+            <a href="{{route('get_journal')}}" class="btn btn-block btn-outline-info mb-4">Получить журнал заявок</a>
         </div>
     </div>
     
@@ -134,11 +134,7 @@
                                                             data-fio="{{$item->familiya.' '.$item->imya.' '.$item->otchestvo}}">Отклонить</button>
                                                         @endif
                                                         @if($item->status_zayav->name == 'На подписи' or $item->status_zayav->name == 'Готова')
-                                                        <form method="get" action="{{route('create_spravka', $item->id)}}">
-                                                                {{csrf_field()}}
-                                                                <input type="hidden" name="id" value="{{$item->id}}">
-                                                                <button href="" class="btn btn-info">Создать справку</button>
-                                                            </form>
+                                                            <button class="btn btn-info" data-toggle="modal" data-target="#createSpravka" data-id="{{$item->id}}">Создать справку</button>
                                                         @endif
                                                     </div>
                                                 </div>
@@ -181,5 +177,31 @@
                 </div>
             </div>
 
+            <div class="modal" tabindex="-1" role="dialog" id="createSpravka">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success">
+                            <h5 class="modal-title">Создание справки</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="GET">
+                                {{csrf_field()}}
+                                <h5>Выберите пол студента</h5>
+                                <select name="gender" class="form-control">
+                                    <option value="man">Мужчина</option>
+                                    <option value="woman">Женщина</option>
+                                </select>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-success" value="Создать">
+                        </form>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             @endsection

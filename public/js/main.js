@@ -33,4 +33,14 @@ $(document).ready(function(){
         modal.find('.modal-title').append(title);
         modal.find('.modal-body input[name="id"]').val(id);
     })
+
+    $('#createSpravka').on('show.bs.modal', function (e) {
+
+        var button = $(e.relatedTarget);
+        var modal = $(this);
+        var id = button.data('id');
+
+        modal.find('.modal-body form').attr('action', "statement/zayav/create/"+id+"");
+    })
+
 });

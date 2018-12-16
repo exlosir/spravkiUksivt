@@ -28,12 +28,13 @@ Route::get('/logout',function(){
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware'=> 'auth', 'prefix'=>'home'], function(){
-    Route::group(['prefix'=>'statement'], function(){
+    Route::group(['prefix'=>'statement'], function(){ // Заявки
         Route::get('/','JournalZayavController@Index')->name('statements');
         Route::get('/{sorted}','JournalZayavController@IndexSorted');
-        Route::post('/change/status','JournalZayavController@Chstatus')->middleware('admin')->name('chstatus');
-        Route::get('/zayav/create/{id}','JournalZayavController@Create_spravka')->middleware('admin')->name('create_spravka');
-        Route::get('/new','JournalZayavController@NewStatement')->middleware('admin')->name('new_statement');
+        Route::post('/change/status','JournalZayavController@Chstatus')->name('chstatus');
+        Route::get('/zayav/create/{id}','JournalZayavController@Create_spravka')->name('create_spravka');
+        Route::get('/journal/get','JournalZayavController@Get_journal')->name('get_journal');
+        Route::get('/new','JournalZayavController@NewStatement')->name('new_statement');
         Route::post('/new/add','JournalZayavController@AddNewStatement')->middleware('admin')->name('add_new_statement');
         Route::delete('/delete/{id}', 'JournalZayavController@Delete')->middleware('admin')->name('delete_statement');
     });
