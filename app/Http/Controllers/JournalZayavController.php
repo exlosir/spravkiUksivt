@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Journal_zayav;
 use App\journal_spravok;
 use App\status_zayav;
+use App\Student;
 use Carbon\Carbon;
 use Auth;
 
@@ -22,6 +23,153 @@ class JournalZayavController extends Controller
             $newstr .= substr($strlen,$i*2,4)."-";
         }
         return trim($newstr,"-"); // удаляем с начала и конца разделители если есть и возвращаем строку
+    }
+
+    public function createNepolnSpravka($zayav){
+        $zayav = Journal_zayav::find($zayav);
+        $dateNow = \Carbon\Carbon::Now();
+        $course = NULL;
+        if($dateNow->year - $zayav->groups->year === 0) {
+            $course = 1;
+        }
+        else $course =  ($dateNow->year - $zayav->groups->year) + 1;
+
+        $phpWord = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('templates/nepolnaya.docx'));
+
+        $phpWord->setValue('number_sprv',$zayav->spravka->id);
+        $phpWord->setValue('date_sprv',\Carbon\Carbon::parse($zayav->spravka->date)->format('d.m.Y'));
+        $phpWord->setValue('student',$zayav->familiya . ' '. $zayav->imya . ' '. $zayav->otchestvo);
+        $phpWord->setValue('year',$zayav->year);
+        $phpWord->setValue('number_order',$zayav->groups->orders->number);
+        $phpWord->setValue('date_order',\Carbon\Carbon::parse($zayav->groups->orders->date)->format('d.m.Y'));
+        $phpWord->setValue('course',$course);
+        $phpWord->setValue('organization',$zayav->Organization);
+        
+        $name = $zayav->spravka->id. ' от ' . \Carbon\Carbon::parse($zayav->spravka->date)->format('d.m.Y') . '.doc';
+        $phpWord->saveAs(storage_path($name));
+
+        return $name;
+    }
+
+    public function createPolnayaSpravka($zayav, $student){
+        $dateNow = \Carbon\Carbon::Now(); // получение текущей даты
+        $course = NULL;
+        if($dateNow->year - $zayav->groups->year === 0)
+            $course = 1;
+        else 
+            $course =  ($dateNow->year - $zayav->groups->year) + 1;
+
+        $srok_okon = NULL;
+        switch($student->groups->specialties->period_obuch){
+            case '3 года 10 месяцев' :{
+                $srok_okon = ['day'=>'30','month'=>'июня','year'=>\Carbon\Carbon::parse($student->groups->orders->date)->addYear(4)->year];
+                break;
+            }
+            case '3 года 6 месяцев' :{
+                $srok_okon = ['day'=>\Carbon\Carbon::parse($student->groups->orders->date)->addYear(4)->Month(2)->daysInMonth,'month'=>'февраля','year'=>\Carbon\Carbon::parse($student->groups->orders->date)->addYear(4)->year];
+                break;
+            }
+            case '2 года 10 месяцев' :{
+                $srok_okon = ['day'=>'30','month'=>'июня','year'=>\Carbon\Carbon::parse($student->groups->orders->date)->addYear(2)->year];
+                break;
+            }
+        }
+
+        $phpWord = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('templates/polnaya.docx'));
+
+        $phpWord->setValue('number_sprv',$zayav->spravka->id);
+        $phpWord->setValue('date_sprv',\Carbon\Carbon::parse($zayav->spravka->date)->format('d.m.Y'));
+        $phpWord->setValue('student',$zayav->familiya . ' '. $zayav->imya . ' '. $zayav->otchestvo);
+        $phpWord->setValue('year',$zayav->year);
+        $phpWord->setValue('year_postup',$zayav->groups->year);
+        $phpWord->setValue('number_order',$zayav->groups->orders->number);
+        $phpWord->setValue('date_order',\Carbon\Carbon::parse($zayav->groups->orders->date)->format('d.m.Y'));
+        $phpWord->setValue('course',$course);
+        $phpWord->setValue('specialties',$student->groups->specialties->name);
+        $phpWord->setValue('period_obuch',$student->groups->specialties->period_obuch);
+        $phpWord->setValue('organization',$zayav->Organization);
+        $phpWord->setValue('osn_obuch',mb_strtolower($student->osnova->name.'ной'));
+        $phpWord->setValue('srok_day',$srok_okon['day']);
+        $phpWord->setValue('srok_month',$srok_okon['month']);
+        $phpWord->setValue('srok_year',$srok_okon['year']);
+        
+        $name = $zayav->spravka->id. ' от ' . \Carbon\Carbon::parse($zayav->spravka->date)->format('d.m.Y') . '.doc';
+        $phpWord->saveAs(storage_path($name));
+
+        return $name;
+    }
+
+    public function createPFSpravka($zayav, $student){
+        $dateNow = \Carbon\Carbon::Now(); // получение текущей даты
+        $course = NULL;
+        if($dateNow->year - $zayav->groups->year === 0)
+            $course = 1;
+        else 
+            $course =  ($dateNow->year - $zayav->groups->year) + 1;
+
+        $srok_okon = NULL;
+        $srok_nach = ['day'=>'01', 'month'=>'сентября','year'=>\Carbon\Carbon::parse($student->groups->orders->date)->year];
+        switch($student->groups->specialties->period_obuch){
+            case '3 года 10 месяцев' :{
+                $srok_okon = ['day'=>'30','month'=>'июня','year'=>\Carbon\Carbon::parse($student->groups->orders->date)->addYear(4)->year];
+                break;
+            }
+            case '3 года 6 месяцев' :{
+                $srok_okon = ['day'=>\Carbon\Carbon::parse($student->groups->orders->date)->addYear(4)->Month(2)->daysInMonth,'month'=>'февраля','year'=>\Carbon\Carbon::parse($student->groups->orders->date)->addYear(4)->year];
+                break;
+            }
+            case '2 года 10 месяцев' :{
+                $srok_okon = ['day'=>'30','month'=>'июня','year'=>\Carbon\Carbon::parse($student->groups->orders->date)->addYear(2)->year];
+                break;
+            }
+        }
+
+        $phpWord = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('templates/pf.docx'));
+
+        $phpWord->setValue('number_sprv',$zayav->spravka->id);
+        $phpWord->setValue('date_sprv',\Carbon\Carbon::parse($zayav->spravka->date)->format('d.m.Y'));
+        $phpWord->setValue('student',$zayav->familiya . ' '. $zayav->imya . ' '. $zayav->otchestvo);
+        $phpWord->setValue('year',$zayav->year);
+        $phpWord->setValue('course',$course);
+        $phpWord->setValue('number_order',$zayav->groups->orders->number);
+        $phpWord->setValue('date_order',\Carbon\Carbon::parse($zayav->groups->orders->date)->format('d.m.Y'));
+        $phpWord->setValue('specialties',$student->groups->specialties->name);
+        $phpWord->setValue('osn_obuch',mb_strtolower($student->osnova->name.'ной'));
+        $phpWord->setValue('srok_nach_day',$srok_nach['day']);
+        $phpWord->setValue('srok_nach_month',$srok_nach['month']);
+        $phpWord->setValue('srok_nach_year',$srok_nach['year']);
+        $phpWord->setValue('srok_okon_day',$srok_okon['day']);
+        $phpWord->setValue('srok_okon_month',$srok_okon['month']);
+        $phpWord->setValue('srok_okon_year',$srok_okon['year']);
+        
+        $name = $zayav->spravka->id. ' от ' . \Carbon\Carbon::parse($zayav->spravka->date)->format('d.m.Y') . '.doc';
+        $phpWord->saveAs(storage_path($name));
+
+        return $name;
+    }
+
+    public function Create_spravka($id){
+        $zayav = Journal_zayav::find($id);
+        $student = Student::where('familiya', $zayav->familiya)->where('imya', $zayav->imya)->where('otchestvo', $zayav->otchestvo)->where('year', $zayav->year)->where('group_id', $zayav->group_id)->first();
+        if($student == null)
+            return redirect()->back()->withErrors('Такой студент отстутствует в списках');
+        else{
+            switch($zayav->type_spravka->name) {
+                case 'Неполная справка': {
+                    $name = self::createNepolnSpravka($zayav, $student);
+                    break;   
+                }
+                case 'Полная справка': {
+                    $name = self::createPolnayaSpravka($zayav, $student);
+                    break;   
+                }
+                case 'Справка в пенсионный фонд': {
+                    $name = self::createPFSpravka($zayav, $student);
+                    break;   
+                }
+            }
+        }
+        return response()->download(storage_path($name));
     }
 
     public function Index(Request $request) {
@@ -98,12 +246,15 @@ class JournalZayavController extends Controller
             $spravka = New journal_spravok();
             $spravka->zayav_id = $request->id;
             $spravka->date = \Carbon\Carbon::now();
-            
+            $spravka->save();
+        }
+        elseif ($status == 'Отклонена'){
+            $zayav->comment = $request->report;
+            $zayav->status = status_zayav::where('name',$status)->get()->first()->id;
         }
         else
             $zayav->status = status_zayav::where('name',$status)->get()->first()->id;
         $zayav->save();
-        $spravka->save();
         return  redirect()->back()->with('success', 'Статус успешно изменен на '. $status);
     }
 

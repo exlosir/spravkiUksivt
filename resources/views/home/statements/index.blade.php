@@ -89,18 +89,22 @@
                                                 </div>
                                             </div>
                                             <div class="card-body">
+                                                @if(!($item->spravka['id'] == NULL))
+                                                <p><b>Номер справки - </b> {{$item->spravka['id']}} от {{\Carbon\Carbon::parse($item->spravka['date'])->format('d.m.Y')}}</p>
+                                                <hr>
+                                                @endif
                                                 <p><b> Студент - </b> {{$item->familiya}} {{$item->imya}}
                                                     {{$item->otchestvo}} {{$item->year}} г.р. обучающийся в группе
                                                     {{$item->groups->year %
                                                     100}}{{$item->groups->specialties->short_name}}-{{$item->groups->number}}</p>
                                                 <p>Запрашивает справку в <strong>{{$item->Organization}}</strong></p>
                                                 <p>Требуемый тип справки - <b>{{$item->type_spravka->name}}</b></p>
-                                                @if(!($item->comment === NULL))
+                                                @if(!($item->comment == NULL))
                                                 <hr>
                                                 <p><b>Заявка отклонена по причине: </b> {{$item->comment}}</p>
                                                 @endif
                                             </div>
-                                            @if(!($item->status_zayav->name == 'Готова'  or $item->status_zayav->name == 'Отклонена' ))
+                                            @if(!($item->status_zayav->name == 'Отклонена' ))
                                             <div class="card-footer">
                                                 <div class="row text-center">
                                                     <div class="col-4">
@@ -128,6 +132,13 @@
                                                         <button href="" class="btn btn-danger" data-toggle="modal"
                                                             data-target="#declineZayav" data-id="{{$item->id}}"
                                                             data-fio="{{$item->familiya.' '.$item->imya.' '.$item->otchestvo}}">Отклонить</button>
+                                                        @endif
+                                                        @if($item->status_zayav->name == 'На подписи' or $item->status_zayav->name == 'Готова')
+                                                        <form method="get" action="{{route('create_spravka', $item->id)}}">
+                                                                {{csrf_field()}}
+                                                                <input type="hidden" name="id" value="{{$item->id}}">
+                                                                <button href="" class="btn btn-info">Создать справку</button>
+                                                            </form>
                                                         @endif
                                                     </div>
                                                 </div>

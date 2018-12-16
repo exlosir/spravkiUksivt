@@ -32,6 +32,7 @@ Route::group(['middleware'=> 'auth', 'prefix'=>'home'], function(){
         Route::get('/','JournalZayavController@Index')->name('statements');
         Route::get('/{sorted}','JournalZayavController@IndexSorted');
         Route::post('/change/status','JournalZayavController@Chstatus')->middleware('admin')->name('chstatus');
+        Route::get('/zayav/create/{id}','JournalZayavController@Create_spravka')->middleware('admin')->name('create_spravka');
         Route::get('/new','JournalZayavController@NewStatement')->middleware('admin')->name('new_statement');
         Route::post('/new/add','JournalZayavController@AddNewStatement')->middleware('admin')->name('add_new_statement');
         Route::delete('/delete/{id}', 'JournalZayavController@Delete')->middleware('admin')->name('delete_statement');

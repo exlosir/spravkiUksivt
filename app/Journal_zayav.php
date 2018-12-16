@@ -21,6 +21,10 @@ class Journal_zayav extends Model
         return $this->belongsTo(Group::class, 'group_id','id');
     }
 
+    public function spravka() {
+        return $this->belongsTo(journal_spravok::class, 'id', 'zayav_id');
+    }
+
     public function students() {
         return $this->belongsTo(Student::class, 'student_id','id');
     }
