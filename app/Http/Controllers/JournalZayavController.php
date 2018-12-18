@@ -42,7 +42,6 @@ class JournalZayavController extends Controller
     }
 
     public function createNepolnSpravka($zayav, $student, $fio){
-        $zayav = Journal_zayav::find($zayav);
         $dateNow = \Carbon\Carbon::Now();
         $course = NULL;
         if($dateNow->year - $zayav->groups->year === 0) {
@@ -165,8 +164,10 @@ class JournalZayavController extends Controller
     }
 
     public function Create_spravka(Request $request, $id){
+        // dd((int)$id);
         $zayav = Journal_zayav::find($id);
         $student = Student::where('familiya', $zayav->familiya)->where('imya', $zayav->imya)->where('otchestvo', $zayav->otchestvo)->where('year', $zayav->year)->where('group_id', $zayav->group_id)->first();
+        // dd($student);
         if($student == null)
             return redirect()->back()->withErrors('Такой студент отстутствует в списках');
         else{
