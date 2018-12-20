@@ -17,7 +17,6 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->integer('number');
             $table->datetime('date');
-            $table->integer('type')->unsigned();
         });
     }
 
