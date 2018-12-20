@@ -15,9 +15,9 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('nubmer');
+            $table->integer('number');
             $table->datetime('date');
-            $table->enum('type',['Зачисление','Отчисление','Академический отпуск','Восстановление']);
+            $table->integer('type')->unsigned();
         });
     }
 

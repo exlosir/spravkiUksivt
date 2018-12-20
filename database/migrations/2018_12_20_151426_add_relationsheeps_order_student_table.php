@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateOrdersTable extends Migration
+class AddRelationsheepsOrderStudentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,11 @@ class UpdateOrdersTable extends Migration
      * @return void
      */
     public function up()
-    {
-        // Schema::table('orders', function (Blueprint $table) {
-        //     $table->dropColumn('type');
-        // });
-
-        // Schema::table('orders', function (Blueprint $table) {
-        //     $table->integer('type')->insigned();
-        // });
+    {        
+        Schema::table('order_student', function(Blueprint $table){
+            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('student_id')->references('id')->on('students');
+        });
     }
 
     /**

@@ -21,8 +21,6 @@ class CreateGroupsTable extends Migration
             $table->integer('department_id')->unsigned();
             $table->integer('order_id')->unsigned(); // приказ о зачислении
         });
-
-
     }
 
     /**

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateUsersTable extends Migration
+class AddRelationsheepsJournalZayavTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class UpdateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function(Blueprint $table){
-            $table->foreign('department_id')->references('id')->on('departments');
+        Schema::table('journal_zayav', function(Blueprint $table){
+            $table->foreign('group_id')->references('id')->on('groups');
+            $table->foreign('type_id')->references('id')->on('type_spravka');
+            $table->foreign('status')->references('id')->on('status_zayav');
         });
     }
 

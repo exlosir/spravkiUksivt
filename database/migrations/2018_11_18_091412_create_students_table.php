@@ -20,11 +20,9 @@ class CreateStudentsTable extends Migration
             $table->string('imya');
             $table->string('otchestvo');
             $table->integer('year');
-            $table->enum('osn_obuch', ['Бюджет','Коммерция']);
-            $table->enum('status_student', ['Учится','В Академическом отпуске','Отчислен']);
+            $table->integer('osn_obuch')->unsigned();
+            $table->integer('status')->unsigned();
         });
-
-
     }
 
     /**

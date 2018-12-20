@@ -18,8 +18,6 @@ class CreateOrderStudentTable extends Migration
             $table->integer('order_id')->unsigned();
             $table->integer('student_id')->unsigned();
         });
-
-
     }
 
     /**
