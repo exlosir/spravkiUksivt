@@ -43,9 +43,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Номер группы</th>
-                                <th scope="col">Год поступления</th>
-                                <th scope="col">Специальность</th>
+                                <th scope="col">Группа</th>
                                 <th scope="col">Отделение</th>
                                 <th scope="col">Приказ о зачислении</th>
                                 @can('isAdmin', User::class) <th scope="col">Изменение/Удаление</th> @endcan
@@ -55,13 +53,15 @@
                             @foreach ($grp as $item)
                             <tr>
                                 <th scope="row">{{$item->id}}</th>
-                                <td>{{$item->number}}</td>
-                                <td>{{$item->year}}</td>
-                                <td>{{$item->specialties->name}}</td>
+                                <td>{{$item->year%100}}{{$item->specialties->short_name}}-{{$item->number}}</td>
                                 <td>{{$item->departments->name}}</td>
                                 <td>{{$item->orders->number}} от {{\Carbon\Carbon::parse($item->orders->date)->format('d.m.Y')}}</td>
                                 @can('isAdmin', User::class)
-                                <td><a href="" class="btn btn-warning">Изменить</a>
+                                <td>
+                                    <form action="{{route('edit_group',$item->id)}}" class="d-inline">
+                                        @csrf
+                                        <button class="btn btn-warning">Изменить</button>
+                                    </form>
                                     <form class="d-inline" action="{{route('delete_group', $item->id)}}" method="POST">
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }}

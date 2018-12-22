@@ -43,8 +43,8 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Имя</th>
                                 <th scope="col">Фамилия</th>
+                                <th scope="col">Имя</th>
                                 <th scope="col">Отчество</th>
                                 <th scope="col">Отделение</th>
                                 <th scope="col">Должность</th>
@@ -55,8 +55,8 @@
                             @foreach ($users as $item)
                             <tr>
                                 <th scope="row">{{$item->id}}</th>
-                                <td>{{$item->imya}}</td>
                                 <td>{{$item->familiya}}</td>
+                                <td>{{$item->imya}}</td>
                                 <td>{{$item->otchestvo}}</td>
                                 <td>
                                     @if(!$item->department == null)
@@ -69,7 +69,11 @@
                                     @endforeach
                                 </td>
                                 @can('isAdmin', User::class)
-                                <td><a href="" class="btn btn-warning">Изменить</a>
+                                <td>
+                                    <form action="{{route('edit_user',$item->id)}}" method="get" class="d-inline">
+                                        {{ csrf_field() }}
+                                        <button href="" class="btn btn-warning">Изменить</button>
+                                    </form>
                                     <form class="d-inline" action="{{route('delete_user', $item->id)}}" method="POST">
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }}

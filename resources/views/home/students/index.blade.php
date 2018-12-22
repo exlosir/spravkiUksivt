@@ -61,7 +61,11 @@
                                 <td>{{$item->osnova->name}}</td>
                                 <td>{{$item->statuses->name}}</td>
                                 @can('isAdmin', User::class)
-                                <td><a href="" class="btn btn-warning">Изменить</a>
+                                <td>
+                                    <form action="{{route('edit_student',$item->id)}}" class="d-inline">
+                                        @csrf
+                                        <button class="btn btn-warning">Изменить</button>
+                                    </form>
                                     <form class="d-inline" action="{{route('delete_student', $item->id)}}" method="POST">
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }}

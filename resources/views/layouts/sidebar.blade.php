@@ -8,7 +8,7 @@
             <a href="{{route('orders')}}" class="list-group-item list-group-item-action">Приказы</a>
             <a href="{{route('departments')}}" class="list-group-item list-group-item-action">Отделения</a>
             <a href="{{route('specialties')}}" class="list-group-item list-group-item-action">Специальности</a>
-            <a href="{{route('type_spravki')}}" class="list-group-item list-group-item-action">Типы справок</a>
+            {{-- <a href="{{route('type_spravki')}}" class="list-group-item list-group-item-action">Типы справок</a> --}}
             <a href="{{route('users')}}" class="list-group-item list-group-item-action">Пользователи</a>
         </div>
     </div>

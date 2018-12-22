@@ -64,7 +64,11 @@
                                 <td>{{$item->number}}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->date)->format('d.m.Y')}}</td>
                                 @can('isAdmin', User::class)
-                                <td><a href="" class="btn btn-warning">Изменить</a>
+                                <td>
+                                    <form action="{{route('edit_order',$item->id)}}" class="d-inline">
+                                        @csrf
+                                        <button class="btn btn-warning">Изменить</button>
+                                    </form>
                                     <form class="d-inline" action="{{route('delete_order', $item->id)}}" method="POST">
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }}

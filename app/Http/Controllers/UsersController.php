@@ -45,6 +45,25 @@ class UsersController extends Controller
         return redirect()->route('users')->with('success', 'Пользователь успешно создан!');
     }
 
+    public function EditUser($id) {
+        $user = User::find($id);
+        $department = Department::all();
+        $role = Role::all();
+        return view('home.users.edit', compact('user', 'department', 'role'));
+    }
+
+    public function ApplyEditUser(Request $request, $id) {
+        $user = User::find($id);
+        $user->familiya = $request->familiya;
+        $user->imya = $request->imya;
+        $user->otchestvo = $request->otchestvo;
+        $user->department_id = $request->department;
+        $user->roles->first()->id = $request->role;
+
+        $user->push();
+        return redirect()->back()->with('success', 'Пользователь успешно изменен!');
+    }
+
     public function Delete($id) {
         $user = User::find($id);
         foreach ($user->roles as $role) {

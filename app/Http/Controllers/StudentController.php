@@ -48,6 +48,29 @@ class StudentController extends Controller
         return redirect()->back()->with('success', 'Студент успешно добавлен!');
     }
 
+    public function EditStudent($id) {
+        $student = Student::find($id);
+        $osnova = student_osnova::all();
+        $status = student_status::all();
+        $group = Group::all();
+        return view('home.students.edit', compact('student', 'osnova', 'status', 'group'));
+    }
+
+    public function ApplyEditStudent(Request $request, $id) {
+        $fio = explode(' ',trim($request->fio));
+        $student = Student::find($id);
+        $student->familiya = $fio[0];
+        $student->imya = $fio[1];
+        $student->otchestvo = $fio[2];
+        $student->year = $request->year;
+        $student->group_id = $request->group;
+        $student->osn_obuch = $request->osnova;
+        $student->status = $request->status;
+
+        $student->save();
+        return redirect()->back()->with('success', 'Студент успешно изменен!');
+    }
+
     public function Delete($id) {
         $student = Student::find($id);
 

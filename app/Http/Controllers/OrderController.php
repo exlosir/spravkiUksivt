@@ -40,6 +40,20 @@ class OrderController extends Controller
         return redirect()->back()->with('success', 'Приказ успешно добавлен!');
     }
 
+    public function EditOrder($id) {
+        $order = Order::find($id);
+        return view('home.orders.edit', compact('order'));
+    }
+
+    public function ApplyEditOrder(Request $request, $id) {
+        $order = Order::find($id);
+        $order->number = $request->number;
+        $order->date = $request->date;
+
+        $order->save();
+        return redirect()->back()->with('success', 'Приказ успешно изменен!');
+    }
+
     public function Delete($id) {
         $order = Order::find($id);
 

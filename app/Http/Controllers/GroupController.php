@@ -39,6 +39,26 @@ class GroupController extends Controller
         $grp->save();
         return redirect()->back()->with('success', 'Группа успешно добавлена!');
     }
+    
+    public function EditGroup($id) {
+        $group = Group::find($id);
+        $spec = Specialty::all();
+        $dep = Department::all();
+        $order = Order::all();
+        return view('home.groups.edit', compact('group', 'spec', 'dep', 'order'));
+    }
+
+    public function ApplyEditGroup(Request $request, $id) {
+        $group = Group::find($id);
+        $group->number = $request->number;
+        $group->year = $request->year;
+        $group->specialty_id = $request->specialty;
+        $group->department_id = $request->department;
+        $group->order_id = $request->order;
+
+        $group->save();
+        return redirect()->back()->with('success', 'Группа успешно изменен!');
+    }
 
     public function Delete($id) {
         $grp = Group::find($id);

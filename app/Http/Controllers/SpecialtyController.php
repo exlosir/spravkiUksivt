@@ -32,6 +32,21 @@ class SpecialtyController extends Controller
         return redirect()->back()->with('success', 'Специальность успешно добавлена!');
     }
 
+    public function EditSpec($id) {
+        $spec = Specialty::find($id);
+        return view('home.specialties.edit', compact('spec'));
+    }
+
+    public function ApplyEditSpec(Request $request, $id) {
+        $spec = Specialty::find($id);
+        $spec->name = $request->name;
+        $spec->short_name = $request->short_name;
+        $spec->period_obuch = $request->period_obuch;
+
+        $spec->save();
+        return redirect()->back()->with('success', 'Специальность успешно измененена!');
+    }
+
     public function Delete($id) {
         $spec = Specialty::find($id);
 

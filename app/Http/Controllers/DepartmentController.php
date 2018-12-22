@@ -28,6 +28,19 @@ class DepartmentController extends Controller
         return redirect()->back()->with('success', 'Отделение успешно добавлена!');
     }
 
+    public function EditDep($id) {
+        $dep = Department::find($id);
+        return view('home.departments.edit', compact('dep'));
+    }
+
+    public function ApplyEditDep(Request $request, $id) {
+        $dep = Department::find($id);
+        $dep->name = $request->name;
+
+        $dep->save();
+        return redirect()->back()->with('success', 'Отделение успешно измененена!');
+    }
+
     public function Delete($id) {
         $spec = Department::find($id);
 

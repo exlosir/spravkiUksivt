@@ -60,7 +60,7 @@ class JournalZayavController extends Controller
         $phpWord->setValue('course',$course);
         $phpWord->setValue('organization',$zayav->Organization);
         
-        $name = $zayav->spravka->id. ' от ' . \Carbon\Carbon::parse($zayav->spravka->date)->format('d.m.Y') . '.doc';
+        $name = $zayav->spravka->id. ' от ' . \Carbon\Carbon::parse($zayav->spravka->date)->format('d.m.Y') . '.docx';
         $phpWord->saveAs(storage_path($name));
 
         return $name;
@@ -108,7 +108,7 @@ class JournalZayavController extends Controller
         $phpWord->setValue('srok_month',$srok_okon['month']);
         $phpWord->setValue('srok_year',$srok_okon['year']);
         
-        $name = $zayav->spravka->id. ' от ' . \Carbon\Carbon::parse($zayav->spravka->date)->format('d.m.Y') . '.doc';
+        $name = $zayav->spravka->id. ' от ' . \Carbon\Carbon::parse($zayav->spravka->date)->format('d.m.Y') . '.docx';
         $phpWord->saveAs(storage_path($name));
 
         return $name;
@@ -157,7 +157,7 @@ class JournalZayavController extends Controller
         $phpWord->setValue('srok_okon_month',$srok_okon['month']);
         $phpWord->setValue('srok_okon_year',$srok_okon['year']);
         
-        $name = $zayav->spravka->id. ' от ' . \Carbon\Carbon::parse($zayav->spravka->date)->format('d.m.Y') . '.doc';
+        $name = $zayav->spravka->id. ' от ' . \Carbon\Carbon::parse($zayav->spravka->date)->format('d.m.Y') . '.docx';
         $phpWord->saveAs(storage_path($name));
 
         return $name;
