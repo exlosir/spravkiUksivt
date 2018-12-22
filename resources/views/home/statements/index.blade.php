@@ -54,6 +54,34 @@
         </div>
     </div>
 
+    <div class="row mb-4">
+            <div class="container">
+                <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#searchForm"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    Поиск заявки и справки
+                </button>
+                <a href="{{route('statements')}}" class="btn btn-outline-secondary">Сбросить поиск</a>
+            </div>
+        </div>
+
+        </p>
+        <div class="collapse mb-4" id="searchForm">
+            <div class="card card-body">
+                <form action="{{route('search_zayav')}}" method="post">
+                    @csrf
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Поиск</span>
+                        </div>
+                        <input type="text" name="search" class="form-control" placeholder="Фамилия,Имя,Отчество или год рождения">
+                        <div class="input-group-append">
+                            <input type="submit" class="btn btn-info" value="Найти">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     {{-- Конец блока добавления заявки --}}
     {{-- <div class="row justify-content-center"> --}}
         {{-- <div class="col-12"> --}}

@@ -29,11 +29,39 @@
 
     {{-- Начало блока добавления студента --}}
 
-    @can('isAdmin', User::class) <a href="{{route('new_student')}}" class="btn btn-block btn-outline-info mb-4">Добавить студента</a> @endcan
+    @can('isAdmin', User::class) <a href="{{route('new_student')}}" class="btn btn-block btn-outline-info mb-4">Добавить
+        студента</a> @endcan
 
     {{-- Конец блока добавления студента --}}
     {{-- <div class="row justify-content-center"> --}}
         {{-- <div class="col-12"> --}}
+            <div class="row mb-4">
+                <div class="container">
+                    <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#searchForm"
+                        aria-expanded="false" aria-controls="collapseExample">
+                        Поиск студента
+                    </button>
+                    <a href="{{route('students')}}" class="btn btn-outline-secondary">Сбросить поиск</a>
+                </div>
+            </div>
+
+            </p>
+            <div class="collapse mb-4" id="searchForm">
+                <div class="card card-body">
+                    <form action="{{route('search_student')}}" method="post">
+                        @csrf
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Поиск</span>
+                            </div>
+                            <input type="text" name="search" class="form-control" placeholder="Фамилия,Имя,Отчество или год рождения">
+                            <div class="input-group-append">
+                                <input type="submit" class="btn btn-info" value="Найти">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div class="card">
                 <div class="card-header bg-info">Студенты</div>
 
@@ -57,7 +85,8 @@
                                 <th scope="row">{{$item->id}}</th>
                                 <td>{{$item->familiya}} {{$item->imya}} {{$item->otchestvo}}</td>
                                 <td>{{$item->year}}</td>
-                                <td>{{$item->groups->year % 100}}{{$item->groups->specialties->short_name}}-{{$item->groups->number}}</td>
+                                <td>{{$item->groups->year %
+                                    100}}{{$item->groups->specialties->short_name}}-{{$item->groups->number}}</td>
                                 <td>{{$item->osnova->name}}</td>
                                 <td>{{$item->statuses->name}}</td>
                                 @can('isAdmin', User::class)

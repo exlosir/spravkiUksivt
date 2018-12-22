@@ -269,6 +269,15 @@ class JournalZayavController extends Controller
         return view('home.statements.index', compact('statements'));
     }
 
+    public function FindZayav(Request $reqest) {
+        $statements = Journal_zayav::where('familiya', 'like','%'. $reqest->search .'%')->
+                                orWhere('imya', 'like','%'. $reqest->search .'%')->
+                                orWhere('otchestvo', 'like','%'. $reqest->search .'%')->
+                                orWhere('year', 'like','%'. $reqest->search .'%')->
+                                orWhere('identify', 'like','%'. $reqest->search .'%')->get();
+        return view('home.statements.index', compact('statements'));
+    }
+
     public function IndexSorted($field_sort) {
         $auth = Auth::user();
         $isAdmin = false;

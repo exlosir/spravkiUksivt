@@ -35,16 +35,18 @@ Route::group(['middleware'=> 'auth', 'prefix'=>'home'], function(){
         Route::get('/zayav/create/{id}','JournalZayavController@Create_spravka')->name('create_spravka');
         Route::get('/journal/get','JournalZayavController@Get_journal')->name('get_journal');
         Route::get('/new','JournalZayavController@NewStatement')->name('new_statement');
+        Route::post('/search','JournalZayavController@FindZayav')->name('search_zayav');
         Route::post('/new/add','JournalZayavController@AddNewStatement')->middleware('admin')->name('add_new_statement');
         Route::delete('/delete/{id}', 'JournalZayavController@Delete')->middleware('admin')->name('delete_statement');
     });
     Route::group(['prefix'=>'students'], function(){
         Route::get('/','StudentController@Index')->name('students');
-        Route::get('/new','StudentController@NewStudent')->middleware('admin')->name('new_student');
-        Route::post('/new/add','StudentController@AddNewStudent')->middleware('admin')->name('add_new_student');
-        Route::get('/edit/{id}','StudentController@EditStudent')->middleware('admin')->name('edit_student');
-        Route::patch('/edit/{id}/apply','StudentController@ApplyEditStudent')->middleware('admin')->name('apply_edit_student');
-        Route::delete('/delete/{id}', 'StudentController@Delete')->middleware('admin')->name('delete_student');
+        Route::get('/new','StudentController@NewStudent')->name('new_student');
+        Route::post('/new/add','StudentController@AddNewStudent')->name('add_new_student');
+        Route::get('/edit/{id}','StudentController@EditStudent')->name('edit_student');
+        Route::post('/search','StudentController@FindStudent')->name('search_student');
+        Route::patch('/edit/{id}/apply','StudentController@ApplyEditStudent')->name('apply_edit_student');
+        Route::delete('/delete/{id}', 'StudentController@Delete')->name('delete_student');
     });
     Route::group(['prefix'=>'orders'], function(){
         Route::get('/','OrderController@Index')->name('orders');

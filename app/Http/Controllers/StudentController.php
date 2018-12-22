@@ -15,6 +15,14 @@ class StudentController extends Controller
         return view('home.students.index', compact('students'));
     }
 
+    public function FindStudent(Request $reqest) {
+        $students = Student::where('familiya', 'like','%'. $reqest->search .'%')->
+                                orWhere('imya', 'like','%'. $reqest->search .'%')->
+                                orWhere('otchestvo', 'like','%'. $reqest->search .'%')->
+                                orWhere('year', 'like','%'. $reqest->search .'%')->get();
+        return view('home.students.index', compact('students'));
+    }
+
     public function NewStudent() {
         $osn = student_osnova::all();
         $status = student_status::all();
