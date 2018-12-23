@@ -31,8 +31,7 @@
 
     <div class="row">
         <div class="col-4">
-            @can('isAdmin', User::class) <a href="/status" class="btn btn-block btn-outline-info mb-4">Статус заявки</a>
-            @endcan
+            <a href="/status" class="btn btn-block btn-outline-info mb-4">Статус заявки</a>
         </div>
         <div class="col-4">
             <a href="/spravka" class="btn btn-block btn-outline-info mb-4">Создать заявку</a>

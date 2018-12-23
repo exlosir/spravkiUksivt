@@ -16,10 +16,15 @@ class StudentController extends Controller
     }
 
     public function FindStudent(Request $reqest) {
-        $students = Student::where('familiya', 'like','%'. $reqest->search .'%')->
-                                orWhere('imya', 'like','%'. $reqest->search .'%')->
-                                orWhere('otchestvo', 'like','%'. $reqest->search .'%')->
-                                orWhere('year', 'like','%'. $reqest->search .'%')->get();
+        $search = explode(' ', $reqest->search);
+        $students = Student::where(function ($q) use ($search){
+            foreach($search as $item) {
+                $q->orWhere('familiya', 'like',"%{$item}%")->
+                orWhere('imya', 'like',"%{$item}%")->
+                orWhere('otchestvo', 'like',"%{$item}%")->
+                orWhere('year', 'like',"%{$item}%");
+            }
+        })->get();
         return view('home.students.index', compact('students'));
     }
 

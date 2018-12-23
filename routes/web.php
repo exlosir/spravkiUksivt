@@ -36,8 +36,8 @@ Route::group(['middleware'=> 'auth', 'prefix'=>'home'], function(){
         Route::get('/journal/get','JournalZayavController@Get_journal')->name('get_journal');
         Route::get('/new','JournalZayavController@NewStatement')->name('new_statement');
         Route::post('/search','JournalZayavController@FindZayav')->name('search_zayav');
-        Route::post('/new/add','JournalZayavController@AddNewStatement')->middleware('admin')->name('add_new_statement');
-        Route::delete('/delete/{id}', 'JournalZayavController@Delete')->middleware('admin')->name('delete_statement');
+        Route::post('/new/add','JournalZayavController@AddNewStatement')->name('add_new_statement');
+        Route::delete('/delete/{id}', 'JournalZayavController@Delete')->name('delete_statement');
     });
     Route::group(['prefix'=>'students'], function(){
         Route::get('/','StudentController@Index')->name('students');
@@ -50,22 +50,23 @@ Route::group(['middleware'=> 'auth', 'prefix'=>'home'], function(){
     });
     Route::group(['prefix'=>'orders'], function(){
         Route::get('/','OrderController@Index')->name('orders');
-        Route::get('/new','OrderController@NewOrder')->middleware('admin')->name('new_order');
-        Route::post('/new/add','OrderController@AddNewOrder')->middleware('admin')->name('add_new_order');
-        Route::get('/edit/{id}','OrderController@EditOrder')->middleware('admin')->name('edit_order');
-        Route::patch('/edit/{id}/apply','OrderController@ApplyEditOrder')->middleware('admin')->name('apply_edit_order');
-        Route::delete('/delete/{id}', 'OrderController@Delete')->middleware('admin')->name('delete_order');
+        Route::get('/new','OrderController@NewOrder')->name('new_order');
+        Route::post('/new/add','OrderController@AddNewOrder')->name('add_new_order');
+        Route::get('/edit/{id}','OrderController@EditOrder')->name('edit_order');
+        Route::patch('/edit/{id}/apply','OrderController@ApplyEditOrder')->name('apply_edit_order');
+        Route::delete('/delete/{id}', 'OrderController@Delete')->name('delete_order');
         
-        Route::get('/new/student_order','OrderController@NewStudentOrder')->middleware('admin')->name('new_student_order');
-        Route::post('/new/student_order/add','OrderController@AddNewStudentOrder')->middleware('admin')->name('add_new_student_order');
+        // Route::get('/new/student_order','OrderController@NewStudentOrder')->middleware('admin')->name('new_student_order');
+        // Route::get('/search','OrderController@FindStudent');
+        // Route::post('/new/student_order/add','OrderController@AddNewStudentOrder')->middleware('admin')->name('add_new_student_order');
     });
     Route::group(['prefix'=>'groups'], function(){
         Route::get('/','GroupController@Index')->name('groups');
-        Route::get('/new','GroupController@NewGroup')->middleware('admin')->name('new_group');
-        Route::post('/new/add','GroupController@AddNewGroup')->middleware('admin')->name('add_new_group');
-        Route::get('/edit/{id}','GroupController@EditGroup')->middleware('admin')->name('edit_group');
-        Route::patch('/edit/{id}/apply','GroupController@ApplyEditGroup')->middleware('admin')->name('apply_edit_group');
-        Route::delete('/delete/{id}', 'GroupController@Delete')->middleware('admin')->name('delete_group');
+        Route::get('/new','GroupController@NewGroup')->name('new_group');
+        Route::post('/new/add','GroupController@AddNewGroup')->name('add_new_group');
+        Route::get('/edit/{id}','GroupController@EditGroup')->name('edit_group');
+        Route::patch('/edit/{id}/apply','GroupController@ApplyEditGroup')->name('apply_edit_group');
+        Route::delete('/delete/{id}', 'GroupController@Delete')->name('delete_group');
     });
     Route::group(['prefix'=>'departments'], function(){
         Route::get('/','DepartmentController@Index')->name('departments');

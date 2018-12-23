@@ -43,4 +43,32 @@ $(document).ready(function(){
         modal.find('.modal-body form').attr('action', "statement/zayav/create/"+id+"");
     })
 
+    $('#selectStudent').on('show.bs.modal', function (e) {
+        // var button = $(e.relatedTarget);
+        // var modal = $(this);
+        // var id = button.data('id');
+
+        // modal.find('.modal-body form').attr('action', "statement/zayav/create/"+id+"");
+    })
+
+    $('#searchStudent').click(function(){
+        var search = $('input[name="search"]').val();
+        $.ajax({
+            url:'/home/orders/search',
+            type: 'get',
+            data: {search:search},
+            success: function(data) {
+                $('.students_field').empty();
+                $.each(data.students, function(i, value) {
+                    $('.students_field').append(
+                        '<div class="form-check">'+
+                        '<label class="form-check-label">'+
+                        '<input type="radio" class="form-check-input" name="order" value="'+value.id+'">'+value.familiya+' '+value.imya+' '+value.otchestvo+' '+value.groups.year%100+''+value.groups.specialties.short_name+'-'+value.groups.number+
+                        '</label>'+
+                    '</div>');
+                });
+            }
+        })
+    })
+
 });

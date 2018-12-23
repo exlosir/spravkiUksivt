@@ -17,4 +17,7 @@ class Student extends Model
     public function statuses() {
         return $this->belongsTo('App\student_status', 'status', 'id');
     }
+    public function order_student() {
+        return $this->belongsTo(order_student::class, 'id', 'student_id');
+    }
 }

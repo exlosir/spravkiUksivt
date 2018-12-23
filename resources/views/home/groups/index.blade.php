@@ -29,7 +29,7 @@
 
     {{-- Начало блока добавления группы --}}
 
-    @can('isAdmin', User::class) <a href="{{route('new_group')}}" class="btn btn-block btn-outline-info mb-4">Добавить группу</a> @endcan
+    <a href="{{route('new_group')}}" class="btn btn-block btn-outline-info mb-4">Добавить группу</a>
 
     {{-- Конец блока добавления группы --}}
     {{-- <div class="row justify-content-center"> --}}
@@ -46,7 +46,7 @@
                                 <th scope="col">Группа</th>
                                 <th scope="col">Отделение</th>
                                 <th scope="col">Приказ о зачислении</th>
-                                @can('isAdmin', User::class) <th scope="col">Изменение/Удаление</th> @endcan
+                                <th scope="col">Изменение/Удаление</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,8 +55,9 @@
                                 <th scope="row">{{$item->id}}</th>
                                 <td>{{$item->year%100}}{{$item->specialties->short_name}}-{{$item->number}}</td>
                                 <td>{{$item->departments->name}}</td>
-                                <td>{{$item->orders->number}} от {{\Carbon\Carbon::parse($item->orders->date)->format('d.m.Y')}}</td>
-                                @can('isAdmin', User::class)
+                                <td>{{$item->orders->number}} от
+                                    {{\Carbon\Carbon::parse($item->orders->date)->format('d.m.Y')}}</td>
+
                                 <td>
                                     <form action="{{route('edit_group',$item->id)}}" class="d-inline">
                                         @csrf
@@ -68,7 +69,7 @@
                                         <button class="btn btn-danger" onclick="return confirm('Удалить группу?')">Удалить</button>
                                     </form>
                                 </td>
-                                @endcan
+
                             </tr>
                             @endforeach
                         </tbody>

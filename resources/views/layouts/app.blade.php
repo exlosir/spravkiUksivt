@@ -30,9 +30,9 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                     <a href="/home" class="btn dropdown-item">Домашняя страница</a>
-                                    @can('isAdmin', User::class)
+                                    {{-- @can('isAdmin', User::class)
                                         <a href="/admin" class="btn dropdown-item">Админ панель</a>
-                                    @endcan
+                                    @endcan --}}
                                     <a href="/logout" class="btn dropdown-item">Выход</a>
                                 </div>
                             </div>

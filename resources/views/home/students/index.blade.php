@@ -29,8 +29,7 @@
 
     {{-- Начало блока добавления студента --}}
 
-    @can('isAdmin', User::class) <a href="{{route('new_student')}}" class="btn btn-block btn-outline-info mb-4">Добавить
-        студента</a> @endcan
+   <a href="{{route('new_student')}}" class="btn btn-block btn-outline-info mb-4">Добавить студента</a> 
 
     {{-- Конец блока добавления студента --}}
     {{-- <div class="row justify-content-center"> --}}
@@ -76,7 +75,7 @@
                                 <th scope="col">Группа</th>
                                 <th scope="col">Основа обучения</th>
                                 <th scope="col">Статус</th>
-                                @can('isAdmin', User::class) <th scope="col">Изменение/Удаление</th> @endcan
+                                <th scope="col">Изменение/Удаление</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -89,7 +88,6 @@
                                     100}}{{$item->groups->specialties->short_name}}-{{$item->groups->number}}</td>
                                 <td>{{$item->osnova->name}}</td>
                                 <td>{{$item->statuses->name}}</td>
-                                @can('isAdmin', User::class)
                                 <td>
                                     <form action="{{route('edit_student',$item->id)}}" class="d-inline">
                                         @csrf
@@ -101,7 +99,6 @@
                                         <button class="btn btn-danger" onclick="return confirm('Удалить студента?')">Удалить</button>
                                     </form>
                                 </td>
-                                @endcan
                             </tr>
                             @endforeach
                         </tbody>

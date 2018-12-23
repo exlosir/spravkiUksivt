@@ -20,4 +20,8 @@ class Order extends Model
     public function type_orders() {
         return $this->belongsTo('App\TypeOrder', 'type', 'id');
     }
+
+    public function student(){
+        return $this->belongsToMany(Student::class, 'order_student')->withPivot('type');
+    }
 }
